@@ -77,11 +77,13 @@ class Model
 
     /**
      * @ORM\ManyToMany(targetEntity=Color::class, inversedBy="modelsPrimary")
+     * @ORM\JoinTable(name="model_primaryColor")
      */
     private $primaryColor;
 
     /**
      * @ORM\ManyToMany(targetEntity=Color::class, inversedBy="modelsSecondary")
+     * @ORM\JoinTable(name="model_secondaryColor")
      */
     private $secondaryColor;
 
