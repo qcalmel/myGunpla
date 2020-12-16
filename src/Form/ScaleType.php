@@ -14,11 +14,6 @@ class ScaleType extends AbstractType
     {
         $builder
             ->add('name')
-            ->add('allowed_scale',EntityType::class,[
-                'class'=>'App\Entity\Grade',
-                'choice_label'=>'name',
-                'multiple'=> true,
-            ])
         ;
     }
 

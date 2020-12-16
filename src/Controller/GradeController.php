@@ -72,7 +72,7 @@ class GradeController extends AbstractController
 
             // create array for json response
             $scales = array();
-            foreach ($grade->getScales() as $scale) {
+            foreach ($grade->getAllowedScales() as $scale) {
                 $scales[] = array($scale->getId(), $scale->getName());
             }
             dump($grade);

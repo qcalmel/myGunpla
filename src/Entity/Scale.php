@@ -24,20 +24,22 @@ class Scale
      */
     private $name;
 
-    /**
-     * @ORM\ManyToMany(targetEntity=Grade::class, inversedBy="scales")
-     */
-    private $allowedScale;
+
 
     /**
      * @ORM\OneToMany(targetEntity=Model::class, mappedBy="scale")
      */
     private $models;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Grade::class, mappedBy="allowed_scales")
+     */
+    private $grades;
+
     public function __construct()
     {
-        $this->allowedScale = new ArrayCollection();
         $this->models = new ArrayCollection();
+        $this->grades = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -57,29 +59,6 @@ class Scale
         return $this;
     }
 
-    /**
-     * @return Collection|Grade[]
-     */
-    public function getAllowedScale(): Collection
-    {
-        return $this->allowedScale;
-    }
-
-    public function addAllowedScale(Grade $allowedScale): self
-    {
-        if (!$this->allowedScale->contains($allowedScale)) {
-            $this->allowedScale[] = $allowedScale;
-        }
-
-        return $this;
-    }
-
-    public function removeAllowedScale(Grade $allowedScale): self
-    {
-        $this->allowedScale->removeElement($allowedScale);
-
-        return $this;
-    }
 
     /**
      * @return Collection|Model[]
@@ -106,6 +85,33 @@ class Scale
             if ($model->getScale() === $this) {
                 $model->setScale(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Grade[]
+     */
+    public function getGrades(): Collection
+    {
+        return $this->grades;
+    }
+
+    public function addGrade(Grade $grade): self
+    {
+        if (!$this->grades->contains($grade)) {
+            $this->grades[] = $grade;
+            $grade->addAllowedScale($this);
+        }
+
+        return $this;
+    }
+
+    public function removeGrade(Grade $grade): self
+    {
+        if ($this->grades->removeElement($grade)) {
+            $grade->removeAllowedScale($this);
         }
 
         return $this;

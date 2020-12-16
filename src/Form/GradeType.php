@@ -17,7 +17,7 @@ class GradeType extends AbstractType
             ->add('name')
             ->add('nameShort')
             ->add('logo')
-            ->add('scales',EntityType::class,[
+            ->add('allowed_scales',EntityType::class,[
                 'class'=>'App\Entity\Scale',
                 'choice_label'=>'name',
                 'multiple'=> true,

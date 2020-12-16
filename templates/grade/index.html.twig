@@ -22,7 +22,7 @@
                 <td>{{ grade.name }}</td>
                 <td>{{ grade.nameShort }}</td>
                 <td>
-                    {% for scale in grade.scales %}
+                    {% for scale in grade.allowedScales %}
                         <a href="{{ path('scale_show', {'id': scale.id}) }}" >{{ scale.name }}</a>
                     {% endfor %}
                 </td>

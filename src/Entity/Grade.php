@@ -40,14 +40,15 @@ class Grade
     private $models;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Scale::class, mappedBy="allowedScale")
+     * @ORM\ManyToMany(targetEntity=Scale::class, inversedBy="grades")
      */
-    private $scales;
+    private $allowed_scales;
+
 
     public function __construct()
     {
         $this->models = new ArrayCollection();
-        $this->scales = new ArrayCollection();
+        $this->allowed_scales = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -124,27 +125,26 @@ class Grade
     /**
      * @return Collection|Scale[]
      */
-    public function getScales(): Collection
+    public function getAllowedScales(): Collection
     {
-        return $this->scales;
+        return $this->allowed_scales;
     }
 
-    public function addScale(Scale $scale): self
+    public function addAllowedScale(Scale $allowedScale): self
     {
-        if (!$this->scales->contains($scale)) {
-            $this->scales[] = $scale;
-
+        if (!$this->allowed_scales->contains($allowedScale)) {
+            $this->allowed_scales[] = $allowedScale;
         }
 
         return $this;
     }
 
-    public function removeScale(Scale $scale): self
+    public function removeAllowedScale(Scale $allowedScale): self
     {
-        if ($this->scales->removeElement($scale)) {
-
-        }
+        $this->allowed_scales->removeElement($allowedScale);
 
         return $this;
     }
+
+
 }
