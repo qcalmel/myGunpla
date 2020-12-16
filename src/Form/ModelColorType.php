@@ -2,26 +2,24 @@
 
 namespace App\Form;
 
-use App\Entity\Color;
+use App\Entity\ModelColor;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ColorType extends AbstractType
+class ModelColorType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('name')
-            ->add('modelsPrimary')
-            ->add('modelsSecondary')
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Color::class,
+            'data_class' => ModelColor::class,
         ]);
     }
 }

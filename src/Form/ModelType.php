@@ -31,8 +31,21 @@ class ModelType extends AbstractType
                 'choice_label'=>'name',
                 'multiple'=> false,
             ])
-            ->add('primaryColor')
-            ->add('secondaryColor')
+            ->add('scale',EntityType::class,[
+                'class'=>'App\Entity\Scale',
+                'choice_label'=>'name',
+                'multiple'=> false
+            ])
+            ->add('primaryColor',EntityType::class,[
+                'class'=>'App\Entity\ModelColor',
+                'choice_label'=>'name',
+                'multiple'=> true,
+            ])
+            ->add('secondaryColor',EntityType::class,[
+                'class'=>'App\Entity\ModelColor',
+                'choice_label'=>'name',
+                'multiple'=> true,
+            ])
             ->add('tags')
         ;
     }

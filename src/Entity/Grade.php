@@ -133,7 +133,7 @@ class Grade
     {
         if (!$this->scales->contains($scale)) {
             $this->scales[] = $scale;
-            $scale->addAllowedScale($this);
+
         }
 
         return $this;
@@ -142,7 +142,7 @@ class Grade
     public function removeScale(Scale $scale): self
     {
         if ($this->scales->removeElement($scale)) {
-            $scale->removeAllowedScale($this);
+
         }
 
         return $this;

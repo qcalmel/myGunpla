@@ -11,6 +11,7 @@
                 <th>Id</th>
                 <th>Name</th>
                 <th>NameShort</th>
+                <th>Echelles</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -20,6 +21,11 @@
                 <td>{{ grade.id }}</td>
                 <td>{{ grade.name }}</td>
                 <td>{{ grade.nameShort }}</td>
+                <td>
+                    {% for scale in grade.scales %}
+                        <a href="{{ path('scale_show', {'id': scale.id}) }}" >{{ scale.name }}</a>
+                    {% endfor %}
+                </td>
                 <td>
                     <a href="{{ path('grade_show', {'id': grade.id}) }}">show</a>
                     <a href="{{ path('grade_edit', {'id': grade.id}) }}">edit</a>

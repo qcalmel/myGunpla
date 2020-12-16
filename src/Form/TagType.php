@@ -20,10 +20,11 @@ class TagType extends AbstractType
                 'choice_label'=>'name',
                 'multiple'=> false,
             ])
-            ->add('category',CategoryTagType::class,[
-                'label'=>'Nouvelle catégorie',
-                ''
-            ])
+//            ->add('categoryNew',CategoryTagType::class,[
+//                'label'=>'Nouvelle catégorie',
+//                'property_path'=>'category',
+//                'required'=>false
+//            ])
         ;
     }
 

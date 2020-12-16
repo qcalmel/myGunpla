@@ -10,6 +10,7 @@
             <tr>
                 <th>Id</th>
                 <th>Name</th>
+                <th>Serie</th>
                 <th>Description</th>
                 <th>actions</th>
             </tr>
@@ -19,6 +20,11 @@
             <tr>
                 <td>{{ unit.id }}</td>
                 <td>{{ unit.name }}</td>
+                <td>
+                    {% for serie in unit.serie %}
+                    <a href="{{ path('serie_show', {'id': serie.id}) }}" >{{ serie.name }}</a>
+                    {% endfor %}
+                </td>
                 <td>{{ unit.description }}</td>
                 <td>
                     <a href="{{ path('unit_show', {'id': unit.id}) }}">show</a>

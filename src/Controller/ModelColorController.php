@@ -2,9 +2,9 @@
 
 namespace App\Controller;
 
-use App\Entity\Color;
-use App\Form\ColorType;
-use App\Repository\ColorRepository;
+use App\Entity\ModelColor;
+use App\Form\ModelColorType;
+use App\Repository\ModelColorRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,12 +13,12 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @Route("/color")
  */
-class ColorController extends AbstractController
+class ModelColorController extends AbstractController
 {
     /**
      * @Route("/", name="color_index", methods={"GET"})
      */
-    public function index(ColorRepository $colorRepository): Response
+    public function index(ModelColorRepository $colorRepository): Response
     {
         return $this->render('color/index.html.twig', [
             'colors' => $colorRepository->findAll(),
@@ -30,8 +30,8 @@ class ColorController extends AbstractController
      */
     public function new(Request $request): Response
     {
-        $color = new Color();
-        $form = $this->createForm(ColorType::class, $color);
+        $color = new ModelColor();
+        $form = $this->createForm(ModelColorType::class, $color);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -51,7 +51,7 @@ class ColorController extends AbstractController
     /**
      * @Route("/{id}", name="color_show", methods={"GET"})
      */
-    public function show(Color $color): Response
+    public function show(ModelColor $color): Response
     {
         return $this->render('color/show.html.twig', [
             'color' => $color,
@@ -61,9 +61,9 @@ class ColorController extends AbstractController
     /**
      * @Route("/{id}/edit", name="color_edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, Color $color): Response
+    public function edit(Request $request, ModelColor $color): Response
     {
-        $form = $this->createForm(ColorType::class, $color);
+        $form = $this->createForm(ModelColorType::class, $color);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -81,7 +81,7 @@ class ColorController extends AbstractController
     /**
      * @Route("/{id}", name="color_delete", methods={"DELETE"})
      */
-    public function delete(Request $request, Color $color): Response
+    public function delete(Request $request, ModelColor $color): Response
     {
         if ($this->isCsrfTokenValid('delete'.$color->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();

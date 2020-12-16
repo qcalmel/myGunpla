@@ -76,13 +76,13 @@ class Model
     private $grade;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Color::class, inversedBy="modelsPrimary")
+     * @ORM\ManyToMany(targetEntity=ModelColor::class, inversedBy="modelsPrimary")
      * @ORM\JoinTable(name="model_primaryColor")
      */
     private $primaryColor;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Color::class, inversedBy="modelsSecondary")
+     * @ORM\ManyToMany(targetEntity=ModelColor::class, inversedBy="modelsSecondary")
      * @ORM\JoinTable(name="model_secondaryColor")
      */
     private $secondaryColor;
@@ -91,6 +91,11 @@ class Model
      * @ORM\ManyToMany(targetEntity=Tag::class, inversedBy="models")
      */
     private $tags;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Scale::class, inversedBy="models")
+     */
+    private $scale;
 
     public function __construct()
     {
@@ -269,14 +274,14 @@ class Model
     }
 
     /**
-     * @return Collection|Color[]
+     * @return Collection|ModelColor[]
      */
     public function getPrimaryColor(): Collection
     {
         return $this->primaryColor;
     }
 
-    public function addPrimaryColor(Color $primaryColor): self
+    public function addPrimaryColor(ModelColor $primaryColor): self
     {
         if (!$this->primaryColor->contains($primaryColor)) {
             $this->primaryColor[] = $primaryColor;
@@ -285,7 +290,7 @@ class Model
         return $this;
     }
 
-    public function removePrimaryColor(Color $primaryColor): self
+    public function removePrimaryColor(ModelColor $primaryColor): self
     {
         $this->primaryColor->removeElement($primaryColor);
 
@@ -293,14 +298,14 @@ class Model
     }
 
     /**
-     * @return Collection|Color[]
+     * @return Collection|ModelColor[]
      */
     public function getSecondaryColor(): Collection
     {
         return $this->secondaryColor;
     }
 
-    public function addSecondaryColor(Color $secondaryColor): self
+    public function addSecondaryColor(ModelColor $secondaryColor): self
     {
         if (!$this->secondaryColor->contains($secondaryColor)) {
             $this->secondaryColor[] = $secondaryColor;
@@ -309,7 +314,7 @@ class Model
         return $this;
     }
 
-    public function removeSecondaryColor(Color $secondaryColor): self
+    public function removeSecondaryColor(ModelColor $secondaryColor): self
     {
         $this->secondaryColor->removeElement($secondaryColor);
 
@@ -336,6 +341,18 @@ class Model
     public function removeTag(Tag $tag): self
     {
         $this->tags->removeElement($tag);
+
+        return $this;
+    }
+
+    public function getScale(): ?Scale
+    {
+        return $this->scale;
+    }
+
+    public function setScale(?Scale $scale): self
+    {
+        $this->scale = $scale;
 
         return $this;
     }

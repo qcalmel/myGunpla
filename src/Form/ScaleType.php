@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Scale;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -13,7 +14,11 @@ class ScaleType extends AbstractType
     {
         $builder
             ->add('name')
-            ->add('allowedScale')
+            ->add('allowed_scale',EntityType::class,[
+                'class'=>'App\Entity\Grade',
+                'choice_label'=>'name',
+                'multiple'=> true,
+            ])
         ;
     }
 

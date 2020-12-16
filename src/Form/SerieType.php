@@ -15,7 +15,6 @@ class SerieType extends AbstractType
             ->add('name')
             ->add('nameShort')
             ->add('logo')
-            ->add('units')
         ;
     }
 
