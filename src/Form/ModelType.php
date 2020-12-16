@@ -46,7 +46,11 @@ class ModelType extends AbstractType
                 'choice_label'=>'name',
                 'multiple'=> true,
             ])
-            ->add('tags')
+            ->add('tags',EntityType::class,[
+                'class'=>'App\Entity\Tag',
+                'choice_label'=>'name',
+                'multiple'=> true,
+            ])
         ;
     }
 
