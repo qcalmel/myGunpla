@@ -71,7 +71,6 @@ class Model
 
     /**
      * @ORM\ManyToOne(targetEntity=Grade::class, inversedBy="models")
-     * @ORM\JoinColumn(nullable=false)
      */
     private $grade;
 

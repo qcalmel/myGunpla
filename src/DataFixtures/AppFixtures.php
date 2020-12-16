@@ -55,36 +55,36 @@ class AppFixtures extends Fixture
         $gradeNG = new Grade();
         $gradeNG->setName('No Grade')
             ->setNameShort('NG')
-        ->addAllowedScale($scale144)
-        ->addAllowedScale($scale100)
-        ->addAllowedScale($scale60)
-        ->addAllowedScale($scale45);
+            ->addAllowedScale($scale144)
+            ->addAllowedScale($scale100)
+            ->addAllowedScale($scale60)
+            ->addAllowedScale($scale45);
         $manager->persist($gradeNG);
 
         $gradeHG = new Grade();
         $gradeHG->setName('High Grade')
             ->setNameShort('HG')
-        ->addAllowedScale($scale144)
-        ->addAllowedScale($scale550);
+            ->addAllowedScale($scale144)
+            ->addAllowedScale($scale550);
         $manager->persist($gradeHG);
 
         $gradeRG = new Grade();
         $gradeRG->setName('Real Grade')
             ->setNameShort('RG')
-        ->addAllowedScale($scale144);
+            ->addAllowedScale($scale144);
         $manager->persist($gradeRG);
 
         $gradeMG = new Grade();
         $gradeMG->setName('Master Grade')
             ->setNameShort('MG')
-        ->addAllowedScale($scale100);
+            ->addAllowedScale($scale100);
         $manager->persist($gradeMG);
 
         $gradePG = new Grade();
         $gradePG->setName('Perfect Grade')
             ->setNameShort('PG')
-        ->addAllowedScale($scale60);
-        $manager->persist($gradeNG);
+            ->addAllowedScale($scale60);
+        $manager->persist($gradePG);
 
         $colorRed = new ModelColor();
         $colorRed->setName('Rouge');
@@ -144,7 +144,7 @@ class AppFixtures extends Fixture
 
         $tagPBandai = new Tag();
         $tagPBandai->setName('Premium Bandai')
-        ->setCategory($tagCategoryExclusive);
+            ->setCategory($tagCategoryExclusive);
         $manager->persist($tagPBandai);
 
         $tagClearColor = new Tag();
@@ -202,14 +202,15 @@ class AppFixtures extends Fixture
             ->addSerie($gundamIBO);
         $manager->persist($unitBarbatos);
 
+
         $modelBarbatos = new Model();
         $modelBarbatos->setName('Gundam Barbatos')
-            ->setGrade($gradeMG)
         ->setGradeNumber(212)
         ->setNbPart(300)
         ->setPrice(4500)
         ->setDate(new \DateTime('12/01/2019'))
         ->setScale($scale100)
+            ->setGrade($gradeMG)
         ->addTag($tagMace)
         ->addPrimaryColor($colorWhite)
         ->addSecondaryColor($colorBlue)
