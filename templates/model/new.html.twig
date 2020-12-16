@@ -9,3 +9,33 @@
 
     <a href="{{ path('model_index') }}">back to list</a>
 {% endblock %}
+{% block javascripts %}
+    <script>
+        $(document).ready(function() {
+            $('#model_grade').change(function() {
+                var gradeId = $(this).val();
+                $.post('{{ app.request.getBaseURL }}/' +'grade/'+ 'scale/' + gradeId , function(data) {
+
+                    var selectedVal = $('option:selected', '#model_scale').attr('value');
+console.log(data)
+                    $('#model_scale option').remove();
+                    for (i in data) {
+                        // create option with employee
+                        var option = $('<option></option>').
+                        attr('value', data[i][0]).
+                        text(data[i][1]);
+                        // set selected employee
+                        if (data[i][0] == selectedVal) {
+                            option.attr('selected', 'selected');
+                        }
+                        // append to employee to employees select
+                        $('#model_scale').append(option);
+                    }
+                }, 'json');
+            })
+
+            // request employees by company
+            $('#model_grade').change();
+        })
+    </script>
+{% endblock %}

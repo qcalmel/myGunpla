@@ -59,6 +59,46 @@ class GradeController extends AbstractController
     }
 
     /**
+     * @Route("/scale/{id}", name="scale_allowed")
+     */
+    public function scaleByGrade(Request $request)
+    {
+    global $grade;
+        if ($request->isXmlHttpRequest() && $request->getMethod() == 'POST') {
+            $em = $this->getDoctrine()->getManager();
+            $id = $request->get('id');
+
+            $grade = $em->getRepository('App:Grade')->find($id);
+
+            // create array for json response
+            $scales = array();
+            foreach ($grade->getScales() as $scale) {
+                $scales[] = array($scale->getId(), $scale->getName());
+            }
+            dump($grade);
+            $response = new Response(json_encode($scales));
+            $response->headers->set('Content-Type', 'application/json');
+
+
+            return $response;
+        }
+        return new Response();
+    }
+
+//    /**
+//     ** @Route("/scale/{id}", name="scale_allowed")
+//     */
+//    public function scaleByGrade(Request $request)
+//    {
+//        if($request->isXmlHttpRequest()) {
+//            $idGrade = $request->request->get('id');
+//            $magasinDatas = //TES DONNEES;
+//        return new JsonResponse($magasinDatas)
+//    }
+//
+//    }
+
+    /**
      * @Route("/{id}/edit", name="grade_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, Grade $grade): Response
