@@ -32,7 +32,7 @@
                 <td>
                     {% for unit in model.unit %}
                         {% for serie in unit.serie %}
-                        <a href="{{ path('serie_show', {'id': serie.id}) }}" >{{ serie.name }}</a>
+                        <a href="{{ path('serie_show', {'id': serie.id}) }}" >{{ serie.nameShort }}</a>
                             {% endfor %}
                     {% endfor %}
                 </td>
