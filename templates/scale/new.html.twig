@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Scale{% endblock %}
+
+{% block body %}
+    <h1>Create new Scale</h1>
+
+    {{ include('scale/_form.html.twig') }}
+
+    <a href="{{ path('scale_index') }}">back to list</a>
+{% endblock %}

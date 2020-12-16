@@ -25,7 +25,7 @@ class Tag
     private $name;
 
     /**
-     * @ORM\ManyToOne(targetEntity=CategoryTag::class, inversedBy="tags")
+     * @ORM\ManyToOne(targetEntity=CategoryTag::class, inversedBy="tags",cascade="persist")
      * @ORM\JoinColumn(nullable=false)
      */
     private $category;

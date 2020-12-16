@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}CategoryTag index{% endblock %}
+
+{% block body %}
+    <h1>CategoryTag index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for category_tag in category_tags %}
+            <tr>
+                <td>{{ category_tag.id }}</td>
+                <td>{{ category_tag.name }}</td>
+                <td>
+                    <a href="{{ path('category_tag_show', {'id': category_tag.id}) }}">show</a>
+                    <a href="{{ path('category_tag_edit', {'id': category_tag.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('category_tag_new') }}">Create new</a>
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Model index{% endblock %}
+
+{% block body %}
+    <h1>Model index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Version</th>
+                <th>Date</th>
+                <th>Price</th>
+                <th>Grade</th>
+                <th>NbPart</th>
+                <th>GradeNumber</th>
+                <th>CodeJAN</th>
+                <th>Description</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for model in models %}
+            <tr>
+                <td>{{ model.id }}</td>
+                <td>{{ model.name }}</td>
+                <td>{{ model.version }}</td>
+                <td>{{ model.date ? model.date|date('Y-m-d') : '' }}</td>
+                <td>{{ model.price }}</td>
+                <td>{{ model.grade.name }}</td>
+                <td>{{ model.nbPart }}</td>
+                <td>{{ model.gradeNumber }}</td>
+                <td>{{ model.codeJAN }}</td>
+                <td>{{ model.description }}</td>
+                <td>
+                    <a href="{{ path('model_show', {'id': model.id}) }}">show</a>
+                    <a href="{{ path('model_edit', {'id': model.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="10">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('model_new') }}">Create new</a>
+{% endblock %}
