@@ -1,0 +1,51 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">myGunpla</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="{{path('model_index')}}">Maquettes</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{path('unit_index')}}">Unités</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{path('grade_index')}}">Grades</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{path('scale_index')}}">Echelles</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{path('tag_index')}}">Tags</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{path('category_tag_index')}}">Categories Tags</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{path('color_index')}}">Couleurs</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{path('serie_new')}}">Series</a>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Ajouter
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="{{path('model_new')}}">Maquette</a>
+                    <a class="dropdown-item" href="{{path('unit_new')}}">Unité</a>
+                    <a class="dropdown-item" href="{{path('grade_new')}}">Grade</a>
+                    <a class="dropdown-item" href="{{path('scale_new')}}">Echelle</a>
+                    <a class="dropdown-item" href="{{path('tag_new')}}">Tag</a>
+                    <a class="dropdown-item" href="{{path('category_tag_new')}}">Categorie de Tag</a>
+                    <a class="dropdown-item" href="{{path('color_new')}}">Couleur</a>
+                    <a class="dropdown-item" href="{{path('serie_new')}}">Serie</a>
+                </div>
+            </li>
+
+        </ul>
+    </div>
+</nav>
