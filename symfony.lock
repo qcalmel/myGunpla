@@ -111,6 +111,9 @@
     "ocramius/proxy-manager": {
         "version": "2.10.0"
     },
+    "php": {
+        "version": "7.4"
+    },
     "psr/cache": {
         "version": "1.0.1"
     },

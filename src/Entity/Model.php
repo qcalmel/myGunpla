@@ -96,6 +96,11 @@ class Model
      */
     private $scale;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Picture::class, mappedBy="model")
+     */
+    private $pictures;
+
     public function __construct()
     {
         $this->images = new ArrayCollection();
@@ -103,6 +108,7 @@ class Model
         $this->primaryColor = new ArrayCollection();
         $this->secondaryColor = new ArrayCollection();
         $this->tags = new ArrayCollection();
+        $this->pictures = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -352,6 +358,36 @@ class Model
     public function setScale(?Scale $scale): self
     {
         $this->scale = $scale;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Picture[]
+     */
+    public function getPictures(): Collection
+    {
+        return $this->pictures;
+    }
+
+    public function addPicture(Picture $picture): self
+    {
+        if (!$this->pictures->contains($picture)) {
+            $this->pictures[] = $picture;
+            $picture->setModel($this);
+        }
+
+        return $this;
+    }
+
+    public function removePicture(Picture $picture): self
+    {
+        if ($this->pictures->removeElement($picture)) {
+            // set the owning side to null (unless already changed)
+            if ($picture->getModel() === $this) {
+                $picture->setModel(null);
+            }
+        }
 
         return $this;
     }
