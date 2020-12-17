@@ -1,4 +1,16 @@
 {{ form_start(form) }}
     {{ form_widget(form) }}
+{% if app.request.attributes.get('_route') == 'model_edit' %}
+    <h2>Images</h2>
+    {% for picture in model.pictures %}
+        <div>
+            <img src="{{ asset('/uploads/'~picture.name) }}" alt="" width="150">
+
+            {# On ajoute un lien permettant de supprimer une image (sera géré en Ajax) #}
+            <a href="{{ path('model_delete_picture', {id: picture.id}) }}" data-delete
+               data-token="{{ csrf_token('delete' ~ picture.id ) }}">Supprimer</a>
+        </div>
+    {% endfor %}
+{% endif %}
     <button class="btn">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}

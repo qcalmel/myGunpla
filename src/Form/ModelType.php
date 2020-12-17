@@ -5,8 +5,10 @@ namespace App\Form;
 use App\Entity\Model;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use function Sodium\add;
 
 class ModelType extends AbstractType
 {
@@ -40,16 +42,26 @@ class ModelType extends AbstractType
                 'class'=>'App\Entity\ModelColor',
                 'choice_label'=>'name',
                 'multiple'=> true,
+                'required'=>false
+
             ])
             ->add('secondaryColor',EntityType::class,[
                 'class'=>'App\Entity\ModelColor',
                 'choice_label'=>'name',
                 'multiple'=> true,
+                'required'=>false
             ])
             ->add('tags',EntityType::class,[
                 'class'=>'App\Entity\Tag',
                 'choice_label'=>'name',
                 'multiple'=> true,
+                'required'=>false
+            ])
+            ->add('pictures',FileType::class,[
+                'label'=>false,
+                'multiple'=>true,
+                'mapped'=>false,
+                'required'=>false
             ])
         ;
     }

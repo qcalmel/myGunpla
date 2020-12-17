@@ -10,6 +10,7 @@
         <thead>
             <tr>
                 <th>Id</th>
+{#                <th>Box</th>#}
                 <th>Name</th>
                 <th>Série</th>
                 <th>Version</th>
@@ -28,6 +29,11 @@
         {% for model in models %}
             <tr>
                 <td>{{ model.id }}</td>
+                <td>
+                    {% if(model.pictures.first != false) %}
+                    <img height="100" src="{{ asset('/uploads/'~model.pictures.first.name) }}">
+                    {% endif %}
+                </td>
                 <td>{{ model.name }}</td>
                 <td>
                     {% for unit in model.unit %}

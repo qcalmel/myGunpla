@@ -3,9 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\Model;
+use App\Entity\Picture;
 use App\Form\ModelType;
 use App\Repository\ModelRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -35,6 +37,23 @@ class ModelController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $pictures = $form->get('pictures')->getData();
+            // On boucle sur les images
+            foreach($pictures as $picture){
+                // On génère un nouveau nom de fichier
+                $fichier = md5(uniqid()).'.'.$picture->guessExtension();
+
+                // On copie le fichier dans le dossier uploads
+                $picture->move(
+                    $this->getParameter('images_directory'),
+                    $fichier
+                );
+
+                // On crée l'image dans la base de données
+                $pic = new Picture();
+                $pic->setName($fichier);
+                $model->addPicture($pic);
+            }
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($model);
             $entityManager->flush();
@@ -67,6 +86,25 @@ class ModelController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $pictures = $form->get('pictures')->getData();
+            // On boucle sur les images
+            foreach($pictures as $picture){
+                // On génère un nouveau nom de fichier
+                $fichier = md5(uniqid()).'.'.$picture->guessExtension();
+
+                // On copie le fichier dans le dossier uploads
+                $picture->move(
+                    $this->getParameter('images_directory'),
+                    $fichier
+                );
+
+                // On crée l'image dans la base de données
+                $pic = new Picture();
+                $pic->setName($fichier);
+                $model->addPicture($pic);
+            }
+
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('model_index');
@@ -90,5 +128,30 @@ class ModelController extends AbstractController
         }
 
         return $this->redirectToRoute('model_index');
+    }
+
+    /**
+     * @Route("/delete/picture/{id}", name="model_delete_picture", methods={"DELETE"})
+     */
+    public function deleteImage(Picture $picture, Request $request){
+        $data = json_decode($request->getContent(), true);
+
+        // On vérifie si le token est valide
+        if($this->isCsrfTokenValid('delete'.$picture->getId(), $data['_token'])){
+            // On récupère le nom de l'image
+            $nom = $picture->getName();
+            // On supprime le fichier
+            unlink($this->getParameter('images_directory').'/'.$nom);
+
+            // On supprime l'entrée de la base
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($picture);
+            $em->flush();
+
+            // On répond en json
+            return new JsonResponse(['success' => 1]);
+        }else{
+            return new JsonResponse(['error' => 'Token Invalide'], 400);
+        }
     }
 }
