@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+ {% if(models is not empty) %}
+ {% for model in models %}
+ {{ model.name }}
+ {% endfor %}
+ {% else %}
+  Aucune maquette trouvée
+ {% endif %}
+{% endblock %}
+
+{% block title %}
+
+{% endblock %}
+

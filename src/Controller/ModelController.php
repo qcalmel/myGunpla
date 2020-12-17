@@ -7,6 +7,8 @@ use App\Entity\Picture;
 use App\Form\ModelType;
 use App\Repository\ModelRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -152,6 +154,36 @@ class ModelController extends AbstractController
             return new JsonResponse(['success' => 1]);
         }else{
             return new JsonResponse(['error' => 'Token Invalide'], 400);
+        }
+    }
+
+    /**
+     * @Route("/search", name="model_search")
+     */
+    public function modelSearch(Request $request){
+        $form = $this->createFormBuilder(null)
+            ->setAction($this->generateUrl('model_search'))
+            ->add('query',TextType::class,[
+                'label'=>false
+            ])
+            ->add(('search'),SubmitType::class,[
+                'attr'=>[
+                    'class'=>'btn btn-primary'
+                ]
+            ])
+            ->getForm();
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()){
+            $query = $form->get('query')->getData();
+            $models = $this->getDoctrine()->getRepository(Model::class)->findBy(['id'=>$query]);
+            return $this->render('model/search.html.twig',[
+                'models' => $models
+            ]);
+        }
+        else {
+            return $this->render('navbar.html.twig', [
+                'form' => $form->createView()
+            ]);
         }
     }
 }

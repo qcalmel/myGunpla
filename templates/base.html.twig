@@ -12,7 +12,8 @@
         {% endblock %}
     </head>
     <body>
-    {% include'navbar.html.twig' %}
+{#    {% include'navbar.html.twig' %}#}
+{{ render(controller('App\\Controller\\ModelController::modelSearch')) }}
     <div class="container-fluid">
         <div class="col-md-4">
             {% block body %}{% endblock %}
