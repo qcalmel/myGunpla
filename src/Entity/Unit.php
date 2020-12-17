@@ -30,11 +30,6 @@ class Unit
     private $description;
 
     /**
-     * @ORM\OneToMany(targetEntity=Image::class, mappedBy="unit")
-     */
-    private $images;
-
-    /**
      * @ORM\ManyToMany(targetEntity=Model::class, mappedBy="unit")
      */
     private $models;
@@ -46,7 +41,6 @@ class Unit
 
     public function __construct()
     {
-        $this->images = new ArrayCollection();
         $this->models = new ArrayCollection();
         $this->serie = new ArrayCollection();
     }
@@ -76,36 +70,6 @@ class Unit
     public function setDescription(?string $description): self
     {
         $this->description = $description;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Image[]
-     */
-    public function getImages(): Collection
-    {
-        return $this->images;
-    }
-
-    public function addImage(Image $image): self
-    {
-        if (!$this->images->contains($image)) {
-            $this->images[] = $image;
-            $image->setUnit($this);
-        }
-
-        return $this;
-    }
-
-    public function removeImage(Image $image): self
-    {
-        if ($this->images->removeElement($image)) {
-            // set the owning side to null (unless already changed)
-            if ($image->getUnit() === $this) {
-                $image->setUnit(null);
-            }
-        }
 
         return $this;
     }

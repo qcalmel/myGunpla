@@ -30,11 +30,6 @@ class Serie
     private $nameShort;
 
     /**
-     * @ORM\OneToOne(targetEntity=Image::class, cascade={"persist", "remove"})
-     */
-    private $logo;
-
-    /**
      * @ORM\ManyToMany(targetEntity=Unit::class, mappedBy="serie")
      */
     private $units;
@@ -69,18 +64,6 @@ class Serie
     public function setNameShort(?string $nameShort): self
     {
         $this->nameShort = $nameShort;
-
-        return $this;
-    }
-
-    public function getLogo(): ?Image
-    {
-        return $this->logo;
-    }
-
-    public function setLogo(?Image $logo): self
-    {
-        $this->logo = $logo;
 
         return $this;
     }

@@ -30,11 +30,6 @@ class Grade
     private $nameShort;
 
     /**
-     * @ORM\OneToOne(targetEntity=Image::class, cascade={"persist", "remove"})
-     */
-    private $logo;
-
-    /**
      * @ORM\OneToMany(targetEntity=Model::class, mappedBy="grade")
      */
     private $models;
@@ -80,17 +75,6 @@ class Grade
         return $this;
     }
 
-    public function getLogo(): ?Image
-    {
-        return $this->logo;
-    }
-
-    public function setLogo(?Image $logo): self
-    {
-        $this->logo = $logo;
-
-        return $this;
-    }
 
     /**
      * @return Collection|Model[]

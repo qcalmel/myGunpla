@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\PictureRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -23,9 +25,14 @@ class Picture
     private $name;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Model::class, inversedBy="pictures")
+     * @ORM\ManyToMany(targetEntity=Model::class, mappedBy="pictures")
      */
-    private $model;
+    private $models;
+
+    public function __construct()
+    {
+        $this->models = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -44,14 +51,29 @@ class Picture
         return $this;
     }
 
-    public function getModel(): ?Model
+    /**
+     * @return Collection|Model[]
+     */
+    public function getModels(): Collection
     {
-        return $this->model;
+        return $this->models;
     }
 
-    public function setModel(?Model $model): self
+    public function addModel(Model $model): self
     {
-        $this->model = $model;
+        if (!$this->models->contains($model)) {
+            $this->models[] = $model;
+            $model->addPicture($this);
+        }
+
+        return $this;
+    }
+
+    public function removeModel(Model $model): self
+    {
+        if ($this->models->removeElement($model)) {
+            $model->removePicture($this);
+        }
 
         return $this;
     }

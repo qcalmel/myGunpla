@@ -60,11 +60,6 @@ class Model
     private $description;
 
     /**
-     * @ORM\OneToMany(targetEntity=Image::class, mappedBy="model")
-     */
-    private $images;
-
-    /**
      * @ORM\ManyToMany(targetEntity=Unit::class, inversedBy="models")
      */
     private $unit;
@@ -97,13 +92,12 @@ class Model
     private $scale;
 
     /**
-     * @ORM\OneToMany(targetEntity=Picture::class, mappedBy="model")
+     * @ORM\ManyToMany(targetEntity=Picture::class, inversedBy="models",cascade={"persist"})
      */
     private $pictures;
 
     public function __construct()
     {
-        $this->images = new ArrayCollection();
         $this->unit = new ArrayCollection();
         $this->primaryColor = new ArrayCollection();
         $this->secondaryColor = new ArrayCollection();
@@ -212,35 +206,6 @@ class Model
         return $this;
     }
 
-    /**
-     * @return Collection|Image[]
-     */
-    public function getImages(): Collection
-    {
-        return $this->images;
-    }
-
-    public function addImage(Image $image): self
-    {
-        if (!$this->images->contains($image)) {
-            $this->images[] = $image;
-            $image->setModel($this);
-        }
-
-        return $this;
-    }
-
-    public function removeImage(Image $image): self
-    {
-        if ($this->images->removeElement($image)) {
-            // set the owning side to null (unless already changed)
-            if ($image->getModel() === $this) {
-                $image->setModel(null);
-            }
-        }
-
-        return $this;
-    }
 
     /**
      * @return Collection|Unit[]
@@ -374,7 +339,6 @@ class Model
     {
         if (!$this->pictures->contains($picture)) {
             $this->pictures[] = $picture;
-            $picture->setModel($this);
         }
 
         return $this;
@@ -382,13 +346,9 @@ class Model
 
     public function removePicture(Picture $picture): self
     {
-        if ($this->pictures->removeElement($picture)) {
-            // set the owning side to null (unless already changed)
-            if ($picture->getModel() === $this) {
-                $picture->setModel(null);
-            }
-        }
+        $this->pictures->removeElement($picture);
 
         return $this;
     }
+
 }
