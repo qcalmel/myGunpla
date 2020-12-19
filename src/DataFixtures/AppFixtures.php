@@ -6,6 +6,7 @@ use App\Entity\CategoryTag;
 use App\Entity\Grade;
 use App\Entity\Model;
 use App\Entity\ModelColor;
+use App\Entity\Picture;
 use App\Entity\Serie;
 use App\Entity\Tag;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -26,6 +27,11 @@ class AppFixtures extends Fixture
         $gundamSeed->setName('Mobile Suit Gundam SEED')
             ->setNameShort('SEED');
         $manager->persist($gundamSeed);
+
+        $gundamSeedDestiny = new Serie();
+        $gundamSeedDestiny->setName('Mobile Suit Gundam SEED Destiny')
+            ->setNameShort('SEED DESTINY');
+        $manager->persist($gundamSeedDestiny);
 
         $gundamIBO = new Serie();
         $gundamIBO->setName('Mobile Suit Gundam Iron-Blooded Orphans')
@@ -202,6 +208,9 @@ class AppFixtures extends Fixture
             ->addSerie($gundamIBO);
         $manager->persist($unitBarbatos);
 
+        $boxPic = new Picture();
+        $boxPic->setName('0c9995de14d54cd33fc10edd3f3daf3e.jpg');
+
 
         $modelBarbatos = new Model();
         $modelBarbatos->setName('Gundam Barbatos')
@@ -216,7 +225,8 @@ class AppFixtures extends Fixture
         ->addSecondaryColor($colorBlue)
         ->addSecondaryColor($colorYellow)
         ->addSecondaryColor($colorRed)
-        ->addUnit($unitBarbatos);
+        ->addUnit($unitBarbatos)
+        ->addPicture($boxPic);
         $manager->persist($modelBarbatos);
 
         $modelExia = new Model();
@@ -237,10 +247,40 @@ class AppFixtures extends Fixture
             ->addSecondaryColor($colorRed)
             ->addSecondaryColor($colorGreen)
             ->addSecondaryColor($colorGrey)
-            ->addUnit($unitExia);
+            ->addUnit($unitExia)
+            ->addPicture($boxPic);;
         $manager->persist($modelExia);
 
 
         $manager->flush();
+        function rand($array,$nb){
+            return array_rand($array,$nb);
+        }
+        $grades = [$gradeHG,$gradeMG,$gradeRG,$gradePG,$gradeNG];
+        for($i=0; $i < 10;$i++){
+            $model = new Model();
+
+            $model->setName('Gundam Exia Extra Finish Ver.')
+                ->setGrade(array_rand($grades,1))
+                ->setGradeNumber('Limitée')
+                ->setNbPart(300)
+                ->setPrice(4860)
+                ->setDate(new \DateTime('11/21/2014'))
+                ->setScale($scale144)
+                ->addTag($tagShield)
+                ->addTag($tagSword)
+                ->addTag($tagBeamSaber)
+                ->addTag($tagPBandai)
+                ->addPrimaryColor($colorWhite)
+                ->addPrimaryColor($colorBlue)
+                ->addSecondaryColor($colorYellow)
+                ->addSecondaryColor($colorRed)
+                ->addSecondaryColor($colorGreen)
+                ->addSecondaryColor($colorGrey)
+                ->addUnit($unitExia)
+                ->addPicture($boxPic);;
+            $manager->persist($model);
+            $manager->flush();
+        }
     }
 }
