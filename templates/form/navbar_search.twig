@@ -1,0 +1,13 @@
+{% block form_row -%}
+    <div>
+        {{ form_label(form) }}
+        {{ form_errors(form) }}
+        {{ form_widget(form) }}
+    </div>
+
+{%- endblock %}
+{% block button_row -%}
+    <div{% with {attr: row_attr|merge({class: (row_attr.class|default('') ~ '')|trim})} %}{{ block('attributes') }}{% endwith %}>
+        {{- form_widget(form) -}}
+    </div>
+{%- endblock button_row %}

@@ -33,7 +33,9 @@
                     <img height="100" src="{{ asset('/uploads/'~model.pictures.first.name) }}">
                     {% endif %}
                 </td>
-                <td>{{ model.name }}</td>
+                <td>
+                    <a href="{{ path('unit_show', {'id': model.unit.first.id}) }}"> {{ model.name }}</a>
+                   </td>
                 <td>
                     {% for unit in model.unit %}
                         {% for serie in unit.serie %}
