@@ -34,18 +34,22 @@
                     {% endif %}
                 </td>
                 <td>
+                    {% if(model.unit is not empty) %}
                     <a href="{{ path('unit_show', {'id': model.unit.first.id}) }}"> {{ model.name }}</a>
+                    {% endif %}
                    </td>
                 <td>
+                    {% if(model.unit is not empty) %}
                     {% for unit in model.unit %}
                         {% for serie in unit.serie %}
                         <a href="{{ path('serie_show', {'id': serie.id}) }}" >{{ serie.nameShort }}</a>
                             {% endfor %}
                     {% endfor %}
+                    {% endif %}
                 </td>
                 <td>{{ model.version }}</td>
-                <td>{{ model.date ? model.date|date('Y-m-d') : '' }}</td>
-                <td>{{ model.price }}</td>
+                <td>{{ model.date ? model.date|date('M Y') : '' }}</td>
+                <td>¥{{ model.price |number_format(0,'.') }}</td>
                 <td>{{ model.grade.name }}</td>
                 <td>{{ model.scale.name }}</td>
                 <td>{{ model.nbPart }}</td>
