@@ -60,7 +60,7 @@ class Model
     private $description;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Unit::class, inversedBy="models")
+     * @ORM\ManyToMany(targetEntity=Unit::class, inversedBy="models",cascade={"persist"})
      */
     private $unit;
 

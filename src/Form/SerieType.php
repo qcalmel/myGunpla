@@ -14,7 +14,6 @@ class SerieType extends AbstractType
         $builder
             ->add('name')
             ->add('nameShort')
-            ->add('logo')
         ;
     }
 

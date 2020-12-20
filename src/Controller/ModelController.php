@@ -2,8 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\Grade;
 use App\Entity\Model;
 use App\Entity\Picture;
+use App\Entity\Scale;
+use App\Entity\Serie;
+use App\Entity\Unit;
 use App\Form\ModelType;
 use App\Repository\ModelRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -14,10 +18,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Symfony\Component\Serializer\Encoder\XmlEncoder;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
-use Symfony\Component\Serializer\Serializer;
 
 /**
  * @Route("/model")
@@ -39,12 +39,42 @@ class ModelController extends AbstractController
                 ],
             ])
             ->getForm();
-        dump($request);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $JSONData = file_get_contents($form->get('json_file')->getData());
             $data = json_decode($JSONData,true);
-            dump($data);
+            $entityManager = $this->getDoctrine()->getManager();
+            $grade = $this->getDoctrine()->getRepository(Grade::class)->find(14);
+            foreach ($data as $modelData){
+                $model = new Model();
+                $price = str_replace(array('¥',','), '',$modelData['price']);
+                $model->setName($modelData["sub_name"])
+                    ->setGrade($grade)
+                    ->setPrice(intval($price))
+                    ->addPicture((new Picture())->setName($modelData['img']))
+                    ->setDescription($modelData['notes'])
+                    ->setDate((new \DateTime($modelData['date'])))
+                    ->setScale($this->getDoctrine()->getRepository(Scale::class)->find(12));
+                $unit = $this->getDoctrine()->getRepository(Unit::class)->findOneBy(['name'=>$modelData["name"]]);
+                $serie = $this->getDoctrine()->getRepository(Serie::class)->findOneBy(['name'=>$modelData["serie"]]);
+                if($modelData['name'] != null) {
+                    if ($unit == null) {
+                        $unit = new Unit();
+                        $unit->setName($modelData['name']);
+                        if ($serie == null) {
+                            $serie = new Serie();
+                            $serie->setName($modelData["serie"]);
+                            $entityManager->persist($serie);
+                        }
+                        $unit->addSerie($serie);
+                        $entityManager->persist($unit);
+                    }
+                    $model->addUnit($unit);
+                    $entityManager->flush();
+                }
+                $entityManager->persist($model);
+            }
+            $entityManager->flush();
              $message = "fichier ok";
         }
 

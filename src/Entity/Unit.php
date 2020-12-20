@@ -35,7 +35,7 @@ class Unit
     private $models;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Serie::class, inversedBy="units")
+     * @ORM\ManyToMany(targetEntity=Serie::class, inversedBy="units",cascade={"persist"})
      */
     private $serie;
 
