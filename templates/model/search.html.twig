@@ -4,7 +4,7 @@
  {% if(models is not empty) %}
   <div class="row">
  {% for model in models %}
-   <div class="col-4">
+   <div class="col-auto">
   <div class="card" style="width: 18rem;">
    <img class="card-img-top" style="width: 100%;height: 250px;object-fit: contain"  src="{{ asset('uploads/'~model.pictures.first.name) }}" alt="Card image cap">
     <div class="card-body">

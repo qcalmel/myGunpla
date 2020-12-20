@@ -175,9 +175,7 @@ class ModelController extends AbstractController
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
             $query = $form->get('query')->getData();
-            dump($query);
             $models = $this->getDoctrine()->getRepository(Model::class)->findByName($query);
-            dump($models);
             return $this->render('model/search.html.twig',[
                 'models' => $models
             ]);
