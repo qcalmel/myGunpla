@@ -34,6 +34,11 @@ class Serie
      */
     private $units;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Era::class, inversedBy="series")
+     */
+    private $era;
+
     public function __construct()
     {
         $this->units = new ArrayCollection();
@@ -91,6 +96,18 @@ class Serie
         if ($this->units->removeElement($unit)) {
             $unit->removeSerie($this);
         }
+
+        return $this;
+    }
+
+    public function getEra(): ?Era
+    {
+        return $this->era;
+    }
+
+    public function setEra(?Era $era): self
+    {
+        $this->era = $era;
 
         return $this;
     }
