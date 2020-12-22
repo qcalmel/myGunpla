@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Grade;
+use App\Entity\Picture;
 use App\Form\GradeType;
 use App\Repository\GradeRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -25,6 +26,28 @@ class GradeController extends AbstractController
         ]);
     }
 
+    public function uploadImg($form, $fieldName)
+    {
+        $picture = $form->get($fieldName)->getData();
+        if ($picture) {
+            // On génère un nouveau nom de fichier
+            $fichier = md5(uniqid()) . '.' . $picture->guessExtension();
+
+            // On copie le fichier dans le dossier uploads
+            $picture->move(
+                $this->getParameter('images_directory'),
+                $fichier
+            );
+
+            // On crée l'image dans la base de données
+            $pic = new Picture();
+            $pic->setName($fichier);
+            return $pic;
+        } else {
+            return null;
+        }
+    }
+
     /**
      * @Route("/new", name="grade_new", methods={"GET","POST"})
      */
@@ -35,6 +58,9 @@ class GradeController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $grade->setLogo($this->uploadImg($form, 'logo'));
+
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($grade);
             $entityManager->flush();
@@ -63,7 +89,7 @@ class GradeController extends AbstractController
      */
     public function scaleByGrade(Request $request)
     {
-    global $grade;
+        global $grade;
         if ($request->isXmlHttpRequest() && $request->getMethod() == 'POST') {
             $em = $this->getDoctrine()->getManager();
             $id = $request->get('id');
@@ -107,6 +133,7 @@ class GradeController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $grade->setLogo($this->uploadImg($form, 'logo'));
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('grade_index');
@@ -123,7 +150,7 @@ class GradeController extends AbstractController
      */
     public function delete(Request $request, Grade $grade): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$grade->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $grade->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($grade);
             $entityManager->flush();

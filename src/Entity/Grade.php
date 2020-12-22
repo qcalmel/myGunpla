@@ -39,6 +39,11 @@ class Grade
      */
     private $allowed_scales;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Picture::class,cascade={"persist"})
+     */
+    private $logo;
+
 
     public function __construct()
     {
@@ -126,6 +131,18 @@ class Grade
     public function removeAllowedScale(Scale $allowedScale): self
     {
         $this->allowed_scales->removeElement($allowedScale);
+
+        return $this;
+    }
+
+    public function getLogo(): ?Picture
+    {
+        return $this->logo;
+    }
+
+    public function setLogo(?Picture $logo): self
+    {
+        $this->logo = $logo;
 
         return $this;
     }
