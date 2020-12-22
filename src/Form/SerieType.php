@@ -17,7 +17,9 @@ class SerieType extends AbstractType
             ->add('nameShort')
             ->add('era',EntityType::class,[
                 "class"=>"App\Entity\Era",
-
+            ])
+            ->add('serieType',EntityType::class,[
+                "class"=>"App\Entity\SerieType",
             ])
         ;
     }
