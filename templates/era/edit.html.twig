@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Era{% endblock %}
+
+{% block body %}
+    <h1>Edit Era</h1>
+
+    {{ include('era/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('era_index') }}">back to list</a>
+
+    {{ include('era/_delete_form.html.twig') }}
+{% endblock %}

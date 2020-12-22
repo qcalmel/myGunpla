@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Era index{% endblock %}
+
+{% block body %}
+    <h1>Era index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for era in eras %}
+            <tr>
+                <td>{{ era.id }}</td>
+                <td>{{ era.name }}</td>
+                <td>
+                    <a href="{{ path('era_show', {'id': era.id}) }}">show</a>
+                    <a href="{{ path('era_edit', {'id': era.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('era_new') }}">Create new</a>
+{% endblock %}
