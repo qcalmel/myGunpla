@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New SerieType{% endblock %}
+
+{% block body %}
+    <h1>Create new SerieType</h1>
+
+    {{ include('serie_type/_form.html.twig') }}
+
+    <a href="{{ path('serie_type_index') }}">back to list</a>
+{% endblock %}

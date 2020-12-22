@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}SerieType index{% endblock %}
+
+{% block body %}
+    <h1>SerieType index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for serie_type in serie_types %}
+            <tr>
+                <td>{{ serie_type.id }}</td>
+                <td>{{ serie_type.name }}</td>
+                <td>
+                    <a href="{{ path('serie_type_show', {'id': serie_type.id}) }}">show</a>
+                    <a href="{{ path('serie_type_edit', {'id': serie_type.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('serie_type_new') }}">Create new</a>
+{% endblock %}
