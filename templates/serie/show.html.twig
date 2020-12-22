@@ -21,6 +21,14 @@
             </tr>
         </tbody>
     </table>
+    <h3>Unit List</h3>
+    <ul>
+        {% for unit in serie.units %}
+            <li>
+                <a href="{{ path('unit_show', {'id': unit.id}) }}">{{ unit.name }}</a>
+            </li>
+        {% endfor %}
+    </ul>
 
     <a href="{{ path('serie_index') }}">back to list</a>
 

@@ -4,13 +4,14 @@
 
 {% block body %}
     <h1>Unit index</h1>
-
+    <h3>Nombre d'Unités : {{ units|length }}</h3>
     <table class="table">
         <thead>
             <tr>
                 <th>Id</th>
                 <th>Name</th>
                 <th>Serie</th>
+                <th>NbModels</th>
                 <th>Description</th>
                 <th>actions</th>
             </tr>
@@ -19,12 +20,13 @@
         {% for unit in units %}
             <tr>
                 <td>{{ unit.id }}</td>
-                <td>{{ unit.name }}</td>
+                <td><a href="{{ path('unit_show', {'id': unit.id}) }}">{{ unit.name }}</a></td>
                 <td>
                     {% for serie in unit.serie %}
                     <a href="{{ path('serie_show', {'id': serie.id}) }}" >{{ serie.name }}</a>
                     {% endfor %}
                 </td>
+                <td>{{ unit.models|length }}</td>
                 <td>{{ unit.description }}</td>
                 <td>
                     <a href="{{ path('unit_show', {'id': unit.id}) }}">show</a>

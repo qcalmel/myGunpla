@@ -7,18 +7,23 @@
 
     <table class="table">
         <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ grade.id }}</td>
-            </tr>
-            <tr>
-                <th>Name</th>
-                <td>{{ grade.name }}</td>
-            </tr>
-            <tr>
-                <th>NameShort</th>
-                <td>{{ grade.nameShort }}</td>
-            </tr>
+        <tr>
+            <td colspan="2">
+                <img height="300" src="{{ asset('/uploads/'~grade.logo.name) }}">
+            </td>
+        </tr>
+        <tr>
+            <th>Id</th>
+            <td>{{ grade.id }}</td>
+        </tr>
+        <tr>
+            <th>Name</th>
+            <td>{{ grade.name }}</td>
+        </tr>
+        <tr>
+            <th>NameShort</th>
+            <td>{{ grade.nameShort }}</td>
+        </tr>
         </tbody>
     </table>
 
