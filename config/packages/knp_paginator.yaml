@@ -1,0 +1,6 @@
+# config/packages/paginator.yaml
+knp_paginator:
+  page_range: 5
+  template:
+    pagination: '@KnpPaginator/Pagination/twitter_bootstrap_v4_pagination.html.twig'
+    sortable: '@KnpPaginator/Pagination/sortable_link.html.twig'
