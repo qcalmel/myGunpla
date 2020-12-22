@@ -10,6 +10,8 @@ use App\Entity\Serie;
 use App\Entity\Unit;
 use App\Form\ModelType;
 use App\Repository\ModelRepository;
+use Exception;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -24,6 +26,14 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class ModelController extends AbstractController
 {
+    private function getPagination($source, PaginatorInterface $paginator, Request $request){
+        return $pagination = $paginator->paginate(
+            $source,
+            $request->query->getInt('page',1),
+            10
+
+        );
+    }
     /**
      * @Route("/json_add", name="model_json_add", methods={"GET","POST"})
      */
@@ -40,6 +50,7 @@ class ModelController extends AbstractController
             ])
             ->getForm();
         $form->handleRequest($request);
+
         if ($form->isSubmitted() && $form->isValid()) {
             $JSONData = file_get_contents($form->get('json_file')->getData());
             $data = json_decode($JSONData,true);
@@ -53,8 +64,13 @@ class ModelController extends AbstractController
                     ->setPrice(intval($price))
                     ->addPicture((new Picture())->setName($modelData['img']))
                     ->setDescription($modelData['notes'])
-                    ->setDate((new \DateTime($modelData['date'])))
-                    ->setScale($this->getDoctrine()->getRepository(Scale::class)->find(12));
+                    ->setScale($this->getDoctrine()->getRepository(Scale::class)->find(12))
+                    ->setGradeNumber($modelData['grade_number']);
+                try {
+                    $model->setDate((new \DateTime($modelData['date'])));
+                } catch (Exception $e) {
+                    dump("date error for model".$modelData['sub_name']);
+                }
                 $unit = $this->getDoctrine()->getRepository(Unit::class)->findOneBy(['name'=>$modelData["name"]]);
                 $serie = $this->getDoctrine()->getRepository(Serie::class)->findOneBy(['name'=>$modelData["serie"]]);
                 if($modelData['name'] != null) {
@@ -89,10 +105,20 @@ class ModelController extends AbstractController
     /**
      * @Route("/", name="model_index", methods={"GET"})
      */
-    public function index(ModelRepository $modelRepository): Response
+    public function index(ModelRepository $modelRepository, PaginatorInterface $paginator, Request $request): Response
     {
+        $pagination = $this->getPagination(
+            $modelRepository->findAll(),
+            $paginator,
+            $request
+        );
+        $totalModels = $modelRepository->createQueryBuilder('a')
+            ->select('count(a.id)')
+            ->getQuery()
+            ->getSingleScalarResult();
         return $this->render('model/index.html.twig', [
-            'models' => $modelRepository->findAll(),
+            'models' => $pagination,
+            'total' => $totalModels
         ]);
     }
 
