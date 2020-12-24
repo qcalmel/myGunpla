@@ -7,25 +7,45 @@
 
     <table class="table">
         <tbody>
+        <tr>
+            <th>Id</th>
+            <td>{{ serie.id }}</td>
+        </tr>
+        <tr>
+            <th>Name</th>
+            <td>{{ serie.name }}</td>
+        </tr>
+        <tr>
+            <th>NameShort</th>
+            <td>{{ serie.nameShort }}</td>
+        </tr>
+        {% if(serie.mainSerie is not empty) %}
             <tr>
-                <th>Id</th>
-                <td>{{ serie.id }}</td>
+                <th>Main Serie</th>
+                <td><a href="{{ path('serie_show', {'id': serie.mainSerie.id}) }}">{{ serie.mainSerie.name }}</a></td>
             </tr>
-            <tr>
-                <th>Name</th>
-                <td>{{ serie.name }}</td>
-            </tr>
-            <tr>
-                <th>NameShort</th>
-                <td>{{ serie.nameShort }}</td>
-            </tr>
+        {% endif %}
+
         </tbody>
     </table>
-    <h3>Unit List</h3>
+    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample"
+            aria-expanded="false" aria-controls="collapseExample">
+        Unit List
+    </button>
+    <div class="collapse" id="collapseExample">
+        <ul>
+            {% for unit in serie.units %}
+                <li>
+                    <a href="{{ path('unit_show', {'id': unit.id}) }}">{{ unit.name }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <h3>Sub Series</h3>
     <ul>
-        {% for unit in serie.units %}
+        {% for serie in serie.series %}
             <li>
-                <a href="{{ path('unit_show', {'id': unit.id}) }}">{{ unit.name }}</a>
+                <a href="{{ path('serie_show', {'id': serie.id}) }}">{{ serie.name }}</a>
             </li>
         {% endfor %}
     </ul>

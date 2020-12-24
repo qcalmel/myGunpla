@@ -17,9 +17,18 @@ class SerieType extends AbstractType
             ->add('nameShort')
             ->add('era',EntityType::class,[
                 "class"=>"App\Entity\Era",
+                'choice_label'=>'name',
+                'required'=>false
             ])
             ->add('serieType',EntityType::class,[
                 "class"=>"App\Entity\SerieType",
+                'choice_label'=>'name',
+                'required'=>false
+            ])
+            ->add('mainSerie',EntityType::class,[
+                "class"=>"App\Entity\Serie",
+                'choice_label'=>'name',
+                'required'=>false
             ])
         ;
     }

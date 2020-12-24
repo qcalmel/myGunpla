@@ -44,9 +44,20 @@ class Serie
      */
     private $serieType;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Serie::class, inversedBy="series")
+     */
+    private $mainSerie;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Serie::class, mappedBy="mainSerie")
+     */
+    private $series;
+
     public function __construct()
     {
         $this->units = new ArrayCollection();
+        $this->series = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -125,6 +136,48 @@ class Serie
     public function setSerieType(?SerieType $serieType): self
     {
         $this->serieType = $serieType;
+
+        return $this;
+    }
+
+    public function getMainSerie(): ?self
+    {
+        return $this->mainSerie;
+    }
+
+    public function setMainSerie(?self $mainSerie): self
+    {
+        $this->mainSerie = $mainSerie;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|self[]
+     */
+    public function getSeries(): Collection
+    {
+        return $this->series;
+    }
+
+    public function addSeries(self $series): self
+    {
+        if (!$this->series->contains($series)) {
+            $this->series[] = $series;
+            $series->setMainSerie($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSeries(self $series): self
+    {
+        if ($this->series->removeElement($series)) {
+            // set the owning side to null (unless already changed)
+            if ($series->getMainSerie() === $this) {
+                $series->setMainSerie(null);
+            }
+        }
 
         return $this;
     }

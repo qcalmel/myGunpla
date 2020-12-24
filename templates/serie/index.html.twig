@@ -11,6 +11,8 @@
                 <th>Id</th>
                 <th>Name</th>
                 <th>NameShort</th>
+                <th>Era</th>
+                <th>Type</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -20,6 +22,8 @@
                 <td>{{ serie.id }}</td>
                 <td>{{ serie.name }}</td>
                 <td>{{ serie.nameShort }}</td>
+                <td>{% if(serie.era is not empty) %}{{ serie.era.name }}{% endif %}</td>
+                <td>{% if(serie.serieType is not empty) %}{{ serie.serieType.name }}{% endif %}</td>
                 <td>
                     <a href="{{ path('serie_show', {'id': serie.id}) }}">show</a>
                     <a href="{{ path('serie_edit', {'id': serie.id}) }}">edit</a>
