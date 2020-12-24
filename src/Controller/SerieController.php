@@ -49,7 +49,7 @@ class SerieController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="serie_show", methods={"GET"})
+     * @Route("/{id}", name="serie_show", methods={"GET"}, requirements={"id":"\d+"})
      */
     public function show(Serie $serie): Response
     {
