@@ -1,22 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
- {% if(models is not empty) %}
-  <div class="row">
- {% for model in models %}
-   <div class="col-auto">
-  <div class="card" style="width: 18rem;">
-   <img class="card-img-top" style="width: 100%;height: 250px;object-fit: contain"  src="{{ asset('uploads/'~model.pictures.first.name) }}" alt="Card image cap">
-    <div class="card-body">
-    <p class="card-text"><a href="{{ path('model_show', {'id': model.id}) }}">{{ model.name }}</a> </p>
-   </div>
-  </div>
-   </div>
- {% endfor %}
-  </div>
- {% else %}
-  Aucune maquette trouvée
- {% endif %}
+ {% include'model/_search_results.html.twig' %}
 {% endblock %}
 
 {% block title %}
