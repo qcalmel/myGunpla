@@ -18,13 +18,56 @@ class ModelRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Model::class);
     }
+
     public function findByName($query)
     {
         $qb = $this->createQueryBuilder('m')
-        ->where("m.name LIKE :query")
-        ->setParameter('query','%'.$query.'%');
+            ->where("m.name LIKE :query")
+            ->setParameter('query', '%' . $query . '%');
         return $qb->getQuery()->getResult();
 
+    }
+
+    public function findByFilter(array $filters)
+    {
+        $qb = $this->createQueryBuilder('m');
+        $aliasList = [];
+        $parameters = [];
+        $parametersIndex = 0;
+        foreach ($filters as $filter) {
+            $filterType = strtolower($filter['filter']->getFormType());
+            $fiterCondition = $filter['condition']->getOperator();
+            $aliasName = substr($filterType, 0, 2);
+            $query = $filter['entity_option'];
+            $colName = 'id';
+            if ($filterType == 'name' || $filterType == 'price') {
+                $query = $filter['text_option'];
+                $colName = $filterType;
+                $aliasName = 'm';
+            }
+            if($aliasName != 'm' && (array_search($aliasName,$aliasList) === false)){
+                if ($aliasName == 'er' || $aliasName =='se'){
+
+                    if(array_search('un',$aliasList) === false){
+                        $qb->join('m.unit','un');
+                        $aliasList[] = 'un';
+                    }
+                    if(array_search('se',$aliasList) === false){
+                        $qb->join('un.serie','se');
+                        if ($aliasName == 'er') $aliasList[] = 'se';
+                    }
+                    if($aliasName == 'er') $qb->join('se.era','er');
+                }
+                else {
+                    $qb->join('m.' . $filterType, $aliasName);
+                }
+                $aliasList[] = $aliasName;
+            }
+            $qb->andWhere($aliasName.'.'.$colName . $fiterCondition . ':query'.$parametersIndex);
+            $parameters['query'.$parametersIndex++] = $query;
+        }
+        $qb->setParameters($parameters);
+        return $qb->getQuery()->getResult();
     }
     // /**
     //  * @return Model[] Returns an array of Model objects

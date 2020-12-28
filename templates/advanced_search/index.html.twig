@@ -1,0 +1,55 @@
+{% macro printFilterRow(filter) %}
+  <div class="row">
+            <div class="col-4">
+                {{ form_row(filter.filter) }}
+            </div>
+            <div class="col-4 align-self-end">
+                {{ form_row(filter.condition) }}
+            </div>
+            <div class="col-4 align-self-end">
+                {{ form_row(filter.entity_option) }}
+                {{ form_row(filter.text_option) }}
+            </div>
+        </div>
+{% endmacro %}
+{% import _self as formMacros %}
+{% extends 'base.html.twig' %}
+
+{% block title %}
+{% endblock %}
+
+{% block body %}
+    <a href="#" id="add_filter" class="btn btn-info">Add filter</a>
+    <div class="selected_option" data-is-authenticated="{{ selected |json_encode }}"></div>
+    <div class="container-fluid">
+    {{ form_start(form) }}
+
+        <div id="filters_list" data-prototype="{{ formMacros.printFilterRow(form.filters.vars.prototype)|e('html_attr') }}">
+        {% for filter in form.filters %}
+        {{ formMacros.printFilterRow(filter) }}
+        {% endfor %}
+    </div>
+    {{ form_end(form) }}
+{#    <div class="container-fluid">#}
+
+{#            {{ form_start(form) }}#}
+{#        <div class="row">#}
+{#            <div class="col-4">#}
+{#                {{ form_row(form.filter) }}#}
+{#            </div>#}
+{#            <div class="col-4 align-self-end">#}
+{#                {{ form_row(form.condition) }}#}
+{#            </div>#}
+{#            <div class="col-4 align-self-end">#}
+{#                {{ form_row(form.entity_option, { 'attr': {'style': 'display:none'}}) }}#}
+{#                {{ form_row(form.text_option, { 'attr': {'style': 'display:none'}}) }}#}
+{#            </div>#}
+{#        </div>#}
+{#            {{ form_end(form) }}#}
+
+{#    </div>#}
+    {% include'model/_search_results.html.twig' %}
+{% endblock %}
+{% block javascripts %}
+    <script src="{{ asset('js/filter.js') }}"></script>
+{% endblock %}
