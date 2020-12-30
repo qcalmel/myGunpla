@@ -18,6 +18,7 @@
         </thead>
         <tbody>
         {% for serie in series %}
+            {% if serie.mainSerie is empty %}
             <tr>
                 <td>{{ serie.id }}</td>
                 <td>{{ serie.name }}</td>
@@ -29,6 +30,20 @@
                     <a href="{{ path('serie_edit', {'id': serie.id}) }}">edit</a>
                 </td>
             </tr>
+                {% for serie in serie.series %}
+                    <tr>
+                        <td>{{ serie.id }}</td>
+                        <td class="text-secondary">- {{ serie.name }}</td>
+                        <td>{{ serie.nameShort }}</td>
+                        <td>{% if(serie.era is not empty) %}{{ serie.era.name }}{% endif %}</td>
+                        <td>{% if(serie.serieType is not empty) %}{{ serie.serieType.name }}{% endif %}</td>
+                        <td>
+                            <a href="{{ path('serie_show', {'id': serie.id}) }}">show</a>
+                            <a href="{{ path('serie_edit', {'id': serie.id}) }}">edit</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            {% endif %}
         {% else %}
             <tr>
                 <td colspan="4">no records found</td>
