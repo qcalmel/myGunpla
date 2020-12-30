@@ -1,6 +1,8 @@
 {% block body %}
     {% if(models is not empty) %}
+        <h3>{{ models|length }} maquettes trouvées</h3>
         <div class="row justify-content-center">
+
             {% for model in models %}
                 <div class="col-auto">
                     <div class="card" style="width: 18rem;">

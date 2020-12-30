@@ -31,12 +31,16 @@ class ModelRepository extends ServiceEntityRepository
     public function findByFilter(array $filters)
     {
         $qb = $this->createQueryBuilder('m');
+        // Création d'un tableau pour éviter les doublons de jointures
         $aliasList = [];
+
         $parameters = [];
-        $parametersIndex = 0;
+        $parameterIndex = 0;
+
+        //
         foreach ($filters as $filter) {
             $filterType = strtolower($filter['filter']->getFormType());
-            $fiterCondition = $filter['condition']->getOperator();
+            $filterCondition = $filter['condition']->getOperator();
             $aliasName = substr($filterType, 0, 2);
             $query = $filter['entity_option'];
             $colName = 'id';
@@ -44,27 +48,42 @@ class ModelRepository extends ServiceEntityRepository
                 $query = $filter['text_option'];
                 $colName = $filterType;
                 $aliasName = 'm';
-            }
-            if($aliasName != 'm' && (array_search($aliasName,$aliasList) === false)){
-                if ($aliasName == 'er' || $aliasName =='se'){
 
-                    if(array_search('un',$aliasList) === false){
-                        $qb->join('m.unit','un');
-                        $aliasList[] = 'un';
-                    }
-                    if(array_search('se',$aliasList) === false){
-                        $qb->join('un.serie','se');
-                        if ($aliasName == 'er') $aliasList[] = 'se';
-                    }
-                    if($aliasName == 'er') $qb->join('se.era','er');
+                if ($filterType == 'name') {
+                    $filterCondition === '=' ? $filterCondition = 'LIKE' : $filterCondition = 'NOT LIKE';
+                    $query = '%' . $query . '%';
                 }
-                else {
-                    $qb->join('m.' . $filterType, $aliasName);
+            }
+            $alreadyJoin = (array_search($aliasName, $aliasList) !== false);
+            if (!$alreadyJoin) {
+                if ($aliasName != 'm') {
+                    if ($aliasName == 'er' || $aliasName == 'se') {
+
+                        if (array_search('un', $aliasList) === false) {
+                            $qb->join('m.unit', 'un');
+                            $aliasList[] = 'un';
+                        }
+                        if (array_search('se', $aliasList) === false) {
+                            $qb->join('un.serie', 'se');
+                            if ($aliasName == 'er') $aliasList[] = 'se';
+                        }
+                        if ($aliasName == 'er') $qb->join('se.era', 'er');
+                    } else {
+                        $qb->join('m.' . $filterType, $aliasName);
+                    }
                 }
                 $aliasList[] = $aliasName;
             }
-            $qb->andWhere($aliasName.'.'.$colName . $fiterCondition . ':query'.$parametersIndex);
-            $parameters['query'.$parametersIndex++] = $query;
+            $whereQuery = $aliasName . '.' . $colName . ' ' . $filterCondition . ' ' . ':query' . $parameterIndex;
+            if ($alreadyJoin && ($filterCondition === '=' || $filterCondition === 'LIKE')) {
+//                dump('or');
+                $qb->orWhere($whereQuery);
+            } else {
+//                dump('and');
+                $qb->andWhere($whereQuery);
+            }
+            $parameters['query' . $parameterIndex++] = $query;
+
         }
         $qb->setParameters($parameters);
         return $qb->getQuery()->getResult();

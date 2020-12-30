@@ -1,12 +1,12 @@
 {% macro printFilterRow(filter) %}
   <div class="row">
-            <div class="col-4">
+            <div class="col">
                 {{ form_row(filter.filter) }}
             </div>
-            <div class="col-4 align-self-end">
+            <div class="col align-self-end">
                 {{ form_row(filter.condition) }}
             </div>
-            <div class="col-4 align-self-end">
+            <div class="col align-self-end">
                 {{ form_row(filter.entity_option) }}
                 {{ form_row(filter.text_option) }}
             </div>

@@ -25,13 +25,11 @@ class AdvancedSearchController extends AbstractController
             // Récupération des champs qui ne sont pas lié a une entité
             $selectedOption = [];
             $submitedData = $form->getData()['filters'];
-
             foreach ($submitedData as $index=>$filter){
                 $selectedOption[$index] = $filter['entity_option'];
             }
             $models = $this->getDoctrine()->getRepository(Model::class)->findByFilter($submitedData);
         }
-
         return $this->render('advanced_search/index.html.twig', [
             'form' => $form->createView(),
             'selected'=>$selectedOption ?? null,

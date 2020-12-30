@@ -63,6 +63,7 @@ class ModelController extends AbstractController
                     ->setGrade($grade)
                     ->setPrice(intval($price))
                     ->addPicture((new Picture())->setName($modelData['img']))
+                    //TODO ne pas créer d'entité Picture quand il n'y pas pas d'image
                     ->setDescription($modelData['notes'])
                     ->setScale($this->getDoctrine()->getRepository(Scale::class)->find(12))
                     ->setGradeNumber($modelData['grade_number']);
