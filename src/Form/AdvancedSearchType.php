@@ -22,7 +22,9 @@ class AdvancedSearchType extends AbstractType
             ]);
 
         $builder
-            ->add('submit', SubmitType::class);
+            ->add('submit', SubmitType::class,[
+                'label'=> 'Rechercher'
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)
