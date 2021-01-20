@@ -3,8 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\AdvancedSearch;
-use App\Entity\Filter;
-use App\Entity\FilterCondition;
 use App\Entity\Model;
 use App\Form\AdvancedSearchType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -25,17 +23,18 @@ class AdvancedSearchController extends AbstractController
             // Récupération des champs qui ne sont pas lié a une entité
             $selectedOption = [];
             $submitedData = $form->getData()['filters'];
-            foreach ($submitedData as $index=>$filter){
+            foreach ($submitedData as $index => $filter) {
                 $selectedOption[$index] = $filter['entity_option'];
             }
             $models = $this->getDoctrine()->getRepository(Model::class)->findByFilter($submitedData);
         }
         return $this->render('advanced_search/index.html.twig', [
             'form' => $form->createView(),
-            'selected'=>$selectedOption ?? null,
-            'models'=>$models ?? null
+            'selected' => $selectedOption ?? null,
+            'models' => $models ?? null
         ]);
     }
+
     /**
      * @Route("/advanced/filter/{id}", name="filter_conditions")
      */
@@ -54,14 +53,14 @@ class AdvancedSearchController extends AbstractController
                 $conditions[] = array($condition->getId(), $condition->getName());
             }
             $options = $optionType;
-            if($optionType != 'price' && $optionType != 'name'){
+            if ($optionType != 'price' && $optionType != 'name') {
                 $options = array();
                 $items = $em->getRepository('App:' . $optionType)->findAll();
                 foreach ($items as $item) {
                     $options[] = array($item->getId(), $item->getName());
                 }
             }
-            $result = ['conditions'=>$conditions,'option'=>$options];
+            $result = ['conditions' => $conditions, 'option' => $options];
             $response = new Response(json_encode($result));
             $response->headers->set('Content-Type', 'application/json');
 
