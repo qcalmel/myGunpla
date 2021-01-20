@@ -12,9 +12,7 @@ $(document).ready(function () {
         e.preventDefault();
         addNewForm();
     })
-    if ($index === 0){
-        addNewForm();
-    }
+
     // Génération du contenu pour les listes déroulantes des filtres déjà existants et
     // ajout de cette fonction lorsque qu'un changement de type de filtre survient
     $('select[id$="_filter"]').change(function () {
@@ -23,6 +21,9 @@ $(document).ready(function () {
         dynamicForm($(this), k++)
         addDeleteButton($(this));
     })
+    if ($index === 0){
+        addNewForm();
+    }
     // Fonction permettant l'ajout d'un bouton de suppression sur un filtre
     function addDeleteButton(form) {
         var id = 'buttonDelete_' + $index
