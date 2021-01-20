@@ -3,7 +3,6 @@
 namespace App\Form;
 
 
-
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -15,16 +14,16 @@ class AdvancedSearchType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('filters',CollectionType::class,[
+            ->add('filters', CollectionType::class, [
                 'entry_type' => FilterType::class,
                 'allow_add' => true,
-                'label'=>false
-            ]);
+                'label' => false
+            ])
+            ->add('submit', SubmitType::class, [
+                'label' => 'Rechercher'
+            ])
+            ->setMethod('GET');
 
-        $builder
-            ->add('submit', SubmitType::class,[
-                'label'=> 'Rechercher'
-            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

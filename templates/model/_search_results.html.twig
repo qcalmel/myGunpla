@@ -1,8 +1,15 @@
+{#{% do models.setSortableTemplate('form/my_sortable_link.html.twig') %}#}
 {% block body %}
     {% if(models is not empty) %}
-        <h3>{{ models|length }} maquettes trouvées</h3>
+        <h3>{{ total }} maquettes trouvées</h3>
+        <label for="sort-select">Sort by :</label>
+        <select onChange="window.location=this.value;">
+            {{ knp_pagination_sortable(models, 'Name A-Z', 'name', {}, {'direction': 'asc'}) }}
+            {{ knp_pagination_sortable(models, 'Name Z-A', 'name', {}, {'direction': 'desc'}) }}
+            {{ knp_pagination_sortable(models, 'Price (low to high)', 'price', {}, {'direction': 'asc'}) }}
+            {{ knp_pagination_sortable(models, 'Price (high to low)', 'price', {}, {'direction': 'desc'}) }}
+        </select>
         <div class="row justify-content-center">
-
             {% for model in models %}
                 <div class="col-auto">
                     <div class="card" style="width: 18rem;">
@@ -22,6 +29,7 @@
                 </div>
             {% endfor %}
         </div>
+        <div class="row justify-content-center">{{ knp_pagination_render(models) }}</div>
     {% else %}
         Aucune maquette trouvée
     {% endif %}

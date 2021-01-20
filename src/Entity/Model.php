@@ -122,6 +122,13 @@ class Model
         return $this;
     }
 
+    public function setDate(?\DateTimeInterface $date): self
+    {
+        $this->date = $date;
+
+        return $this;
+    }
+
     public function getVersion(): ?string
     {
         return $this->version;
@@ -137,13 +144,6 @@ class Model
     public function getDate(): ?\DateTimeInterface
     {
         return $this->date;
-    }
-
-    public function setDate(?\DateTimeInterface $date): self
-    {
-        $this->date = $date;
-
-        return $this;
     }
 
     public function getPrice(): ?string

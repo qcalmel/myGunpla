@@ -2,9 +2,9 @@
 
 namespace App\Controller;
 
-use App\Entity\AdvancedSearch;
 use App\Entity\Model;
 use App\Form\AdvancedSearchType;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -12,11 +12,24 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class AdvancedSearchController extends AbstractController
 {
+    private function getPagination($source, PaginatorInterface $paginator, Request $request){
+        return $pagination = $paginator->paginate(
+            $source,
+            $request->query->getInt('page',1),
+            21
+
+        );
+    }
+
     /**
      * @Route("/advanced/search", name="advanced_search")
+     * @param Request $request
+     * @param PaginatorInterface $paginator
+     * @return Response
      */
-    public function index(Request $request): Response
+    public function index(Request $request, PaginatorInterface $paginator): Response
     {
+
         $form = $this->createForm(AdvancedSearchType::class);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -27,11 +40,21 @@ class AdvancedSearchController extends AbstractController
                 $selectedOption[$index] = $filter['entity_option'];
             }
             $models = $this->getDoctrine()->getRepository(Model::class)->findByFilter($submitedData);
+            $totalModels = count($models);
+            $pagination = $this->getPagination(
+                $models,
+                $paginator,
+                $request
+            );
+            $pagination->setSortableTemplate('form/my_sortable_link.html.twig');
+
         }
+
         return $this->render('advanced_search/index.html.twig', [
             'form' => $form->createView(),
             'selected' => $selectedOption ?? null,
-            'models' => $models ?? null
+            'models' => $pagination ?? null,
+            'total' => $totalModels ?? null
         ]);
     }
 
