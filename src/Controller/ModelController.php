@@ -261,6 +261,7 @@ class ModelController extends AbstractController
                 'label'=>false
             ])
             ->add(('search'),SubmitType::class,[
+                'label'=> 'Rechercher',
                 'attr'=>[
                     'class'=>'btn btn-primary'
                 ]
