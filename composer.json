@@ -31,9 +31,7 @@
         "symfony/validator": "5.2.*",
         "symfony/var-dumper": "5.2.*",
         "symfony/web-profiler-bundle": "5.2.*",
-        "symfony/yaml": "5.2.*"
-    },
-    "require-dev": {
+        "symfony/yaml": "5.2.*",
         "doctrine/doctrine-fixtures-bundle": "^3.4",
         "symfony/maker-bundle": "^1.25"
     },
