@@ -25,7 +25,14 @@
     {% for model in unit.models %}
         <div class="col-auto">
             <div class="card" style="width: 18rem;">
-                <img class="card-img-top" style="width: 100%;height: 250px;object-fit: contain"  src="{{ asset('uploads/'~model.pictures.first.name) }}" alt="Card image cap">
+                <img class="card-img-top"
+                     style="width: 100%;height: 250px;object-fit: contain"
+                        {% if model.pictures.first is not empty %}
+                            src="{{ asset('uploads/'~model.pictures.first.name) }}"
+                        {% else %}
+                            src="{{ asset('uploads/no-image.png') }}"
+                        {% endif %}
+                     alt="Card image cap">
                 <div class="card-body">
                     <p class="card-text"><a href="{{ path('model_show', {'id': model.id}) }}">{{ model.name }}</a> </p>
                 </div>
