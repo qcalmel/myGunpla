@@ -36,6 +36,11 @@ class ModelType extends AbstractType
                 'choice_label'=>'name',
                 'multiple'=> false,
             ])
+            ->add('edition',EntityType::class,[
+                'class'=>'App\Entity\Edition',
+                'choice_label'=>'name',
+                'multiple'=> false,
+            ])
             ->add('scale',EntityType::class,[
                 'class'=>'App\Entity\Scale',
                 'choice_label'=>'name',
