@@ -96,6 +96,11 @@ class Model
      */
     private $pictures;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Edition::class, inversedBy="models")
+     */
+    private $edition;
+
     public function __construct()
     {
         $this->unit = new ArrayCollection();
@@ -347,6 +352,18 @@ class Model
     public function removePicture(Picture $picture): self
     {
         $this->pictures->removeElement($picture);
+
+        return $this;
+    }
+
+    public function getEdition(): ?Edition
+    {
+        return $this->edition;
+    }
+
+    public function setEdition(?Edition $edition): self
+    {
+        $this->edition = $edition;
 
         return $this;
     }
