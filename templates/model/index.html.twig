@@ -31,7 +31,7 @@
                 <td>{{ model.id }}</td>
                 <td>
                     {% if(model.pictures.first != false) %}
-                    <img height="100" src="{{ asset('/uploads/'~model.pictures.first.name) }}">
+                    <img height="100" src="{{ path('get_picture',{'id' : model.pictures.first.id}) }}">
                     {% endif %}
                 </td>
                 <td>

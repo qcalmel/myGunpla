@@ -16,7 +16,7 @@
                         <img class="card-img-top"
                              style="width: 100%;height: 250px;object-fit: contain"
                                 {% if model.pictures.first is not empty %}
-                                    src="{{ asset('uploads/'~model.pictures.first.name) }}"
+                                    src="{{ path('get_picture',{'id' : model.pictures.first.id}) }}"
                                 {% else %}
                                     src="{{ asset('uploads/no-image.png') }}"
                                 {% endif %}

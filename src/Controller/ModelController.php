@@ -10,6 +10,8 @@ use App\Entity\Serie;
 use App\Entity\Unit;
 use App\Form\ModelType;
 use App\Repository\ModelRepository;
+use Aws\S3\Exception\S3Exception;
+use Aws\S3\S3Client;
 use Exception;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -17,6 +19,7 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -102,6 +105,81 @@ class ModelController extends AbstractController
 
 
     }
+
+//    /**
+//     * @param string $imageName
+//     *
+//     * @return \Aws\Result|bool
+//     */
+//    public function getImageFromPrivateBucket(string $imageName)
+//    {
+//
+//        $s3 = new S3Client(['version'=>'latest','region'=>'eu-west-3','credentials'=>['key'=>'%env(AWS_KEY)%','secret'=>'%env(AWS_SECRET_KEY)%']]);
+//        try {
+//            return $s3->getObject(
+//                [
+//                    'Bucket' => 'mygunpla',
+//                    'Key'    => 'uploads/'.$imageName,
+//                ]
+//            );
+//        } catch (S3Exception $e) {
+//            // Handle your exception here
+//        }
+//    }
+
+    /**
+     * @param Picture $picture
+     * @Route("/{id}/picture", name="get_picture")
+     * @return RedirectResponse|Response
+     */
+    public function getImgFromS3(Picture $picture)
+    {
+
+
+        $bucket = 'mygunpla';
+        $keyname = $picture->getName();
+
+        $s3 = new S3Client([
+            'version' => 'latest',
+            'region'  => 'eu-west-3',
+            'credentials'=>['key'=>$_ENV['AWS_KEY'],'secret'=>$_ENV['AWS_SECRET_KEY']]
+        ]);
+
+        try {
+            // Get the object.
+            $result = $s3->getObject([
+                'Bucket' => $bucket,
+                'Key'    => 'thumbnails/'.$keyname
+            ]);
+
+            // Display the object in the browser.
+            header("Content-Type: {$result['ContentType']}");
+            echo $result['Body'];
+        } catch (S3Exception $e) {
+            echo $e->getMessage() . PHP_EOL;
+        }
+    }
+
+//    /**
+//     * @param Picture $picture
+//     * @Route("/{id}/download-document", name="download_document")
+//     * @return RedirectResponse|Response
+//     */
+//    public function downloadDocumentAction(Picture $picture)
+//    {
+//
+//
+//        $result = $this->getImageFromPrivateBucket($picture->getName());
+//        if ($result) {
+//            // Display the object in the browser
+//            header("Content-Type: {$result['ContentType']}");
+//            echo $result['Body'];
+//
+//            return new Response();
+//        }
+//
+//        return new Response('', 404);
+//    }
 
     /**
      * @Route("/", name="model_index", methods={"GET"})
