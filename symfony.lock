@@ -105,6 +105,9 @@
     "guzzlehttp/psr7": {
         "version": "1.7.0"
     },
+    "harvesthq/chosen": {
+        "version": "v1.8.7"
+    },
     "jms/metadata": {
         "version": "2.4.0"
     },
